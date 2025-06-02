@@ -1,16 +1,20 @@
-import React from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router';
+import { useAuth } from '@/state/contexts/auth';
 
-export interface MainLayoutProps {
-  /**
-   * The content to be rendered inside the layout
-   */
-  children: React.ReactNode;
-}
+const MainLayout = () => {
+  const { pathname } = useLocation();
 
-/**
- * Main layout component with header and footer
- */
-const MainLayout = ({ children }: MainLayoutProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isAuthenticated, login, logout } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate
+      to="/welcome"
+      state={{ pathname }}
+      replace
+    />;
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-blue-600 text-white">
@@ -43,7 +47,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       </header>
 
       <main className="flex-grow">
-        {children}
+        <Outlet />
       </main>
 
       <footer className="bg-gray-800 text-white py-6">

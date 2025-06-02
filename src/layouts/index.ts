@@ -1,2 +1,2 @@
-// Export all layouts as named exports
+// Export all layouts
 export { default as MainLayout } from './MainLayout';

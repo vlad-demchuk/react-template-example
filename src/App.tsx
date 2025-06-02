@@ -1,16 +1,16 @@
-import { Home } from './pages';
-import { MainLayout } from './layouts';
 import './styles/global.css';
+import AppRouter from './routes/AppRouter.tsx';
+import { AuthProvider } from '@/state/contexts/auth';
+
 
 /**
  * Main application component
  */
 const App = () => {
   return (
-    <MainLayout>
-      <Home />
-    </MainLayout>
-  );
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>);
 };
 
 export default App;

@@ -12,6 +12,7 @@ src/
 ├── hooks/         # Shared React hooks
 ├── pages/         # Page components (e.g., for routing)
 ├── layouts/       # Layout components
+├── routes/        # Routing configuration and utilities
 ├── data/          # Static data or temporary mocks
 ├── services/      # API service logic
 ├── lib/           # External libraries or wrappers
@@ -42,14 +43,15 @@ Contains reusable components that are shared across multiple features or pages.
 - `ui/`: Contains primitive UI components like buttons, inputs, cards, etc.
 - Components should be focused on presentation rather than business logic
 - Each component should have its own folder with the component file, styles, and tests
-- Export components as default exports, and re-export them as named exports from an index.tsx file for better autocompletion
+- Export components as default exports, and re-export them as named exports from an index.ts file for better autocompletion
 
 Example:
+
 ```tsx
 // Good
 const Button = () => {...}
 export default Button;
-// index.tsx
+// index.ts
 export { default as Button } from './Button';
 ```
 
@@ -62,6 +64,7 @@ Contains custom React hooks that can be reused across the application.
 - Export hooks as default exports, and re-export them as named exports from an index.ts file for better autocompletion
 
 Example:
+
 ```tsx
 export function useLocalStorage() {...}
 // index.ts
@@ -82,6 +85,27 @@ Contains layout components that wrap pages with common elements like headers, fo
 
 - Layouts should accept children props to render the page content
 - Keep layouts focused on structure rather than specific content
+
+### `routes/`
+
+Contains routing configuration, route constants, and routing-related utilities.
+
+- `AppRouter.tsx`: Main router configuration using a routing library
+- `routeHelpers.tsx`: Helper utilities for routing (e.g. lazy loading routes)
+- `paths.ts`: Centralized location for all route path constants
+
+The `paths.ts` file contains an object with all application route paths, which helps prevent hardcoding path strings throughout the application:
+
+```tsx
+// Example of paths.ts
+export const routePaths = {
+  home: '/',
+  notFound: '*',
+  // other routes...
+} as const;
+```
+
+Using the routePaths object makes your routes more maintainable and provides better type safety when referencing routes.
 
 ### `data/`
 
@@ -114,7 +138,7 @@ Contains utility functions that are used across the application.
 
 - Functions should be pure and focused on a single task
 - Group related utilities in a single file (e.g., `date.ts`, `string.ts`)
-- Export functions as named exports 
+- Export functions as named exports
 - Re-export functions from an index.ts for cleaner path (optional)
 
 ### `state/`
@@ -149,6 +173,7 @@ Contains shared TypeScript type definitions.
 Contains feature-specific code organized into self-contained units.
 
 Each feature folder can contain its own:
+
 - Components
 - Hooks
 - State
@@ -188,20 +213,24 @@ export type { UserProfileExtended } from './types';
 ## Best Practices
 
 1. **Naming Conventions**
+
    - Use PascalCase for component files and folders (e.g., `Button.tsx`)
    - Use camelCase for utility files, hooks, and non-component files (e.g., `useLocalStorage.ts`, `formatDate.ts`)
    - Use kebab-case for feature folders and asset files (e.g., `users`, `hero-image.png`)
 
 2. **Imports**
+
    - Use absolute imports for better readability and to avoid deep nesting issues
    - Group imports by type (React, third-party, internal)
 
 3. **Component Structure**
+
    - Keep components focused on a single responsibility
    - Extract complex logic into custom hooks
    - Use TypeScript props interfaces for better documentation and type safety
 
 4. **Code Splitting**
+
    - Consider code splitting for large features or pages
    - Use dynamic imports for routes that aren't immediately needed
 
@@ -219,6 +248,7 @@ Create a new feature when you have a set of components, hooks, and utilities tha
 4. Are complex enough to benefit from isolation
 
 Examples of good feature candidates:
+
 - users
 - shopping-cart
 - notifications
